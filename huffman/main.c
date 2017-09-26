@@ -8,6 +8,5 @@ int main(int argc, char* argv[])
 	{
 		//TODO compress or decompress
 	}
-
 	return 0;
 }
