@@ -9,8 +9,7 @@
 
 bool isNull(void *ptr);
 #define ERROR -404
-#define DEBUG if(DEBUG_STATUS)
-bool DEBUG_STATUS = true;
+#define DEBUG if(1)
 
 
 #endif /* HEADERS_DEFAULT_H_ */
