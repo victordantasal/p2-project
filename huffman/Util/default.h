@@ -7,7 +7,11 @@
 #include <stdbool.h>
 #include <string.h>
 
+
 bool isNull(void *ptr);
+FILE* FileReader_new(char *path);
+FILE* FileWriter_new(char *path);
+
 #define ERROR -404
 #define DEBUG if(1)
 

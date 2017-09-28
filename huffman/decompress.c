@@ -8,8 +8,4 @@
 int huffman_decompress(char *file_path)
 {
 	//TODO compress method
-	if(1)	//SUCCESSFUL
-		return 1;
-	else
-		return 0;
 }

@@ -1,11 +1,4 @@
-#include "../Util/default.h"
-
-typedef struct _priority_queue Priority_Queue;
-typedef struct _node_priority_queue Node;
-
-
-
-//----------STRUCTS------------
+#include "priority_queue.h"
 
 struct _priority_queue
 {
@@ -21,46 +14,6 @@ struct _node_priority_queue
 
 };
 
-//----------ADT METHODS-------------
-
-//Enfileira um "value" qualquer na fila de prioridade.
-void PriorityQueue_enqueue(Priority_Queue *pq, void *value, int priority);
-
-//Desenfileira o primeiro valor da fila e o retorna.
-void* PriorityQueue_dequeue(Priority_Queue *pq);
-
-bool PriorityQueue_isEmpty(Priority_Queue *pq);
-
-void PriorityQueue_destruct(Priority_Queue *pq);
-
-Priority_Queue* PriorityQueue_create();
-
-//Cria um nó
-Node* Node_new(void *value, int priority);
-
-
-
-
-//-----------ENCAPSULAMENTO-----------
-
-//GETS
-Node* PriorityQueue_getHead(Priority_Queue *pq);
-int   PriorityQueue_getSize(Priority_Queue *pq);
-void* Node_getValue(Node *node);
-int   Node_getPriority(Node *node);
-Node* Node_getNext(Node *node);
-
-
-//SETS
-bool PriorityQueue_setHead(Priority_Queue *pq, Node *new_head);
-bool PriorityQueue_setSize(Priority_Queue *pq, int new_size);
-bool Node_setValue(Node *node, void *new_value);
-bool Node_setPriority(Node *node, int new_priority);
-bool Node_setNext(Node *current, Node *new_next);
-
-
-//---------IMPLEMENTATION---------
-//ADT IMPLEMENTATION <>
 
 Node* Node_new(void *value, int priority)
 {
@@ -139,9 +92,6 @@ void* PriorityQueue_dequeue(Priority_Queue *pq)
 	return NULL;
 }
 
-//ADT IMPLEMENTATION <\>
-
-//GETS IMPLEMENTATION<>
 Node* PriorityQueue_getHead(Priority_Queue *pq)
 {
 	if(isNull(pq))
@@ -176,9 +126,7 @@ Node* Node_getNext(Node *node)
 		return NULL;
 	return node->next;
 }
-//GETS IMPLEMENTATION<\>
 
-//SETS IMPLEMENTATION<>
 bool PriorityQueue_setHead(Priority_Queue *pq, Node *new_head)
 {
 	if(isNull(pq))
@@ -218,4 +166,3 @@ bool Node_setNext(Node *current, Node *new_next)
 	current->next = new_next;
 	return true;
 }
-//SETS IMPLEMENTATION<\>

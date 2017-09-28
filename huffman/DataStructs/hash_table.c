@@ -1,4 +1,4 @@
-#include "../Util/default.h"
+#include "hash_table.h"
 
 typedef struct _hash_table Hash_Table;
 typedef struct _element Element;
@@ -16,19 +16,60 @@ struct _element
 	Element *next;
 };
 
-void* HashTable_getValue(Hash_Table *ht, int pos);
-Element* HashTable_getTable(Hash_Table *ht, int pos);
-int HashTable_getSize(Hash_Table *ht);
-int HashTable_getFilled(Hash_Table *ht);
+void* HashTable_getValue(Hash_Table *ht, int pos)
+{
+	//TODO method getValue
+}
 
-void* Element_getValue(Element *e);
-Element* Element_getNext(Element *e);
+Element* HashTable_getTable(Hash_Table *ht, int pos)
+{
+	//TODO method getTable
+}
 
-bool HashTable_setValue(Hash_Table *ht, int pos, void *value);
-bool HashTable_setTable(Hash_Table *ht, int pos, Element *new_element);
-bool HashTable_setSize(Hash_Table *ht, int new_size);
-bool HashTable_setFilled(Hash_Table *ht, int new_filled);
+int HashTable_getSize(Hash_Table *ht)
+{
+	//TODO method getSize
+}
+int HashTable_getFilled(Hash_Table *ht)
+{
+	//TODO method getFilled
+}
 
-Hash_Table* HashTable_create(int size);
-bool HashTable_destruct(Hash_Table *ht);
-bool HashTable_add(Hash_Table *ht, void *value, int hash);
+void* Element_getValue(Element *e)
+{
+	//TODO method getValue
+}
+Element* Element_getNext(Element *e)
+{
+	//TODO method getNext
+}
+
+bool HashTable_setValue(Hash_Table *ht, int pos, void *value)
+{
+	//TODO method setValue
+}
+bool HashTable_setTable(Hash_Table *ht, int pos, Element *new_element)
+{
+	//TODO method setTable
+}
+bool HashTable_setSize(Hash_Table *ht, int new_size)
+{
+	//TODO method setValue
+}
+bool HashTable_setFilled(Hash_Table *ht, int new_filled)
+{
+	//TODO method setFilled
+}
+
+Hash_Table* HashTable_create(int size)
+{
+	//TODO method create a hash table with size SIZE
+}
+bool HashTable_destruct(Hash_Table *ht)
+{
+	//TODO method destruct
+}
+bool HashTable_add(Hash_Table *ht, void *value, int hash)
+{
+	//TODO method add on hash
+}
