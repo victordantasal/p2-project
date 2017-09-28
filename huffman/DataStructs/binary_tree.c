@@ -13,9 +13,9 @@ void* BinaryTree_getValue(Binary_Tree *bt);
 Binary_Tree* BinaryTree_getLeft(Binary_Tree *bt);
 Binary_Tree* BinaryTree_getRight(Binary_Tree *bt);
 
-int BinaryTree_setValue(Binary_Tree *bt, void* value);
-int BinaryTree_setLeft(Binary_Tree *bt, Binary_Tree *new_left);
-int BinaryTree_setRight(Binary_Tree *bt, Binary_Tree *new_right);
+bool BinaryTree_setValue(Binary_Tree *bt, void* value);
+bool BinaryTree_setLeft(Binary_Tree *bt, Binary_Tree *new_left);
+bool BinaryTree_setRight(Binary_Tree *bt, Binary_Tree *new_right);
 
 Binary_Tree* BinaryTree_create();
 Binary_Tree* BinaryTree_new(void *value, Binary_Tree *left, Binary_Tree *right);
