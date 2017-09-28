@@ -52,11 +52,11 @@ Node* Node_getNext(Node *node);
 
 
 //SETS
-int PriorityQueue_setHead(Priority_Queue *pq, Node *new_head);
-int PriorityQueue_setSize(Priority_Queue *pq, int new_size);
-int Node_setValue(Node *node, void *new_value);
-int Node_setPriority(Node *node, int new_priority);
-int Node_setNext(Node *current, Node *new_next);
+bool PriorityQueue_setHead(Priority_Queue *pq, Node *new_head);
+bool PriorityQueue_setSize(Priority_Queue *pq, int new_size);
+bool Node_setValue(Node *node, void *new_value);
+bool Node_setPriority(Node *node, int new_priority);
+bool Node_setNext(Node *current, Node *new_next);
 
 
 //---------IMPLEMENTATION---------
@@ -179,7 +179,7 @@ Node* Node_getNext(Node *node)
 //GETS IMPLEMENTATION<\>
 
 //SETS IMPLEMENTATION<>
-int PriorityQueue_setHead(Priority_Queue *pq, Node *new_head)
+bool PriorityQueue_setHead(Priority_Queue *pq, Node *new_head)
 {
 	if(isNull(pq))
 		return false;
@@ -187,7 +187,7 @@ int PriorityQueue_setHead(Priority_Queue *pq, Node *new_head)
 	return true;
 }
 
-int PriorityQueue_setSize(Priority_Queue *pq, int new_size)
+bool PriorityQueue_setSize(Priority_Queue *pq, int new_size)
 {
 	if(isNull(pq))
 		return false;
@@ -195,7 +195,7 @@ int PriorityQueue_setSize(Priority_Queue *pq, int new_size)
 	return true;
 }
 
-int Node_setValue(Node *node, void *new_value)
+bool Node_setValue(Node *node, void *new_value)
 {
 	if(isNull(node))
 		return false;
@@ -203,7 +203,7 @@ int Node_setValue(Node *node, void *new_value)
 	return true;
 }
 
-int Node_setPriority(Node *node, int new_priority)
+bool Node_setPriority(Node *node, int new_priority)
 {
 	if(isNull(node))
 		return false;
@@ -211,7 +211,7 @@ int Node_setPriority(Node *node, int new_priority)
 	return true;
 }
 
-int Node_setNext(Node *current, Node *new_next)
+bool Node_setNext(Node *current, Node *new_next)
 {
 	if(isNull(current))
 		return false;
