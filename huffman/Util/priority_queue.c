@@ -1,9 +1,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
+
+#define ERROR -404;
+#define DEBUG if(DEBUG_STATUS)
+
 typedef struct _priority_queue Priority_Queue;
 typedef struct _node_priority_queue Node;
-#define ERROR -404;
-
+bool DEBUG_STATUS = true;
 
 //----------STRUCTS------------
 
@@ -28,6 +31,9 @@ void Priority_Queue_enqueue(Priority_Queue *pq, void *value);
 
 //Desenfileira o primeiro valor da fila e o retorna.
 void* Priority_Queue_dequeue(Priority_Queue *pq);
+
+//Cria um nó
+Node* Node_new(void *value, int priority);
 
 
 //-----------ENCAPSULAMENTO-----------
@@ -54,6 +60,19 @@ bool is_null(void *ptr)
 {
 	return ptr == NULL;
 }
+
+Node* Node_new(void *value, int priority)
+{
+	Node *new_node = (Node*) malloc(sizeof(Node));
+	if (Node_set_value(new_node, value) &&
+		Node_set_priority(new_node, priority) &&
+		Node_set_next(new_node, NULL))
+		return new_node;
+
+	DEBUG printf("ERRO, IS NOT POSSIBLE ALOCATE MEMORY");
+	return NULL;
+}
+
 bool Priority_Queue_is_empty(Priority_Queue *pq)
 {
 	if( !is_null(pq) )
@@ -63,12 +82,40 @@ bool Priority_Queue_is_empty(Priority_Queue *pq)
 
 void Priority_Queue_enqueue(Priority_Queue *pq, void *value, int priority)
 {
-	//TODO ENQUEUE PRIORITY
+	Node *new_node = Node_new(value, priority);
+	Node *aux;
+	if(Priority_Queue_is_empty(pq) || Node_get_priority(Priority_Queue_get_head(pq)) >= priority)
+	{
+		Node_set_next(new_node, Priority_Queue_get_head(pq));
+		Priority_Queue_set_head(pq, new_node);
+	}else{
+		aux = Priority_Queue_get_head(pq);
+
+		while(!is_null(Node_get_next(aux)) && Node_get_priority(Node_get_next(aux)) < priority)
+			aux = Node_get_next(aux);
+
+		Node_set_next(aux, new_node);
+		Node_set_next(new_node, Node_get_next(aux));
+	}
+
+
+	Priority_Queue_set_size(pq, Priority_Queue_get_size(pq) + 1);
 }
 
 void* Priority_Queue_dequeue(Priority_Queue *pq)
 {
-	//TODO DEQUEUE RETURNS VOID POINTER OF VALUE (PQ->HEAD->VALUE)
+	void *value;
+	Node *aux;
+	if(!Priority_Queue_is_empty(pq))
+	{
+		aux = Priority_Queue_get_head(pq);
+		value = Node_get_value(aux);
+		Priority_Queue_set_head(pq, Node_get_next(aux));
+		free(aux);
+
+		Priority_Queue_set_size(pq, Priority_Queue_get_size(pq) - 1);
+		return value;
+	}
 	return NULL;
 }
 
