@@ -57,7 +57,7 @@ Binary_Tree* BinaryTree_new(void *value, Binary_Tree *left, Binary_Tree *right)
 	Binary_Tree *new_bt = (Binary_Tree*) malloc(sizeof(Binary_Tree));
 	if(Binary_Tree_setValue(new_bt,value) && Binary_Tree_setLeft(new_bt,left) && Binary_Tree_setRight(new_bt,right))
 		return new_bt;
-	DEBUG printf("ERROR, IT'S NOT POSSIBLE ALOCATE MEMORY");
+	DEBUG printf("ERROR, IT'S NOT POSSIBLE TO ALOCATE MEMORY");
 	return NULL;
 
 
