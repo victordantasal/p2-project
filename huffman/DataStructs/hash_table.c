@@ -18,47 +18,72 @@ struct _element
 
 void* HashTable_getValue(Hash_Table *ht, int pos)
 {
-	//TODO method getValue
+	if(isNull(ht->table[pos]))
+		return NULL;
+	return ht->table[pos]->value;
 }
 
 Element* HashTable_getTable(Hash_Table *ht, int pos)
 {
-	//TODO method getTable
+	if(isNull(ht->table[pos]))
+		return NULL;
+	return ht->table[pos];
 }
 
 int HashTable_getSize(Hash_Table *ht)
 {
-	//TODO method getSize
+	if(isNull(ht))
+		return ERROR;
+	return ht->maxsize;
 }
 int HashTable_getFilled(Hash_Table *ht)
 {
-	//TODO method getFilled
+	if(isNull(ht))
+		return ERROR;
+	return ht->filled;
 }
 
 void* Element_getValue(Element *e)
 {
-	//TODO method getValue
+	if(isNull(e))
+		return NULL;
+	return e->value;
 }
 Element* Element_getNext(Element *e)
 {
-	//TODO method getNext
+	if(isNull(e))
+		return NULL;
+	return e->next;
 }
 
 bool HashTable_setValue(Hash_Table *ht, int pos, void *value)
 {
-	//TODO method setValue
+	if(isNull(ht->table[pos]))
+		return false;
+	ht->table[pos]->value = value;
+	return true;
 }
 bool HashTable_setTable(Hash_Table *ht, int pos, Element *new_element)
 {
-	//TODO method setTable
+	if(isNull(ht))
+		return false;
+	ht->table[pos] = new_element;
+	return true;
 }
 bool HashTable_setSize(Hash_Table *ht, int new_size)
 {
-	//TODO method setValue
+	if(isNull(ht))
+		return false;
+	ht->maxsize = new_size;
+	return true;
 }
 bool HashTable_setFilled(Hash_Table *ht, int new_filled)
 {
-	//TODO method setFilled
+	if(isNull(ht))
+		return false;
+	ht->filled = new_filled;
+	return true;
+
 }
 
 Hash_Table* HashTable_create(int size)
