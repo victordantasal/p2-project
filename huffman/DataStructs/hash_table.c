@@ -56,6 +56,14 @@ Element* Element_getNext(Element *e)
 	return e->next;
 }
 
+bool Element_setValue(Element *e,void *value)
+{
+	if(isNull(e))
+		return false;
+	e->value = value;
+	return true;
+}
+
 bool HashTable_setValue(Hash_Table *ht, int pos, void *value)
 {
 	if(isNull(ht->table[pos]))
@@ -88,13 +96,50 @@ bool HashTable_setFilled(Hash_Table *ht, int new_filled)
 
 Hash_Table* HashTable_create(int size)
 {
-	//TODO method create a hash table with size SIZE
+	int i;
+	Hash_Table *new_ht = (Hash_Table*) malloc(sizeof(Hash_Table));
+	if(HashTable_setSize(new_ht,size) && HashTable_setFilled(new_ht,0))
+		new_ht->table = malloc(HashTable_getSize(new_ht) * sizeof(Element));
+	    for(i = 0; i < HashTable_getSize(new_ht); i++) new_ht->table[i] = NULL;
+	    return new_ht;
+
+	DEBUG printf("ERROR, IT'S NOT POSSIBLE TO ALOCATE MEMORY");
+	return NULL;
 }
 bool HashTable_destruct(Hash_Table *ht)
 {
-	//TODO method destruct
+	if(isNull(ht))
+		return false;
+
+	int i;
+	for(i = 0; i < HashTable_getSize(ht); i++)
+	{
+        if(HashTable_getTable(ht,i) != NULL)
+        	free(ht->table[i]);
+	}
+	free(ht);
+	return true;
 }
 bool HashTable_add(Hash_Table *ht, void *value, int hash)
 {
-	//TODO method add on hash
+	int h = value % hash;
+	while(HashTable_getTable(ht,h) != NULL)
+	{
+		if(HashTable_getValue(ht,h) == value)
+		{
+			HashTable_setValue(ht,h,value);
+			break;
+		}
+		h = (h + 1) % hash;
+	}
+
+	if(HashTable_getTable(ht,h) == NULL)
+	{
+		Element *new_element = (Element*) malloc(sizeof(Element));
+		if(Element_setValue(new_element,value) && HashTable_setTable(ht,h,new_element))
+			HashTable_setFilled(ht,ht->filled++);
+			return true;
+	}
+
+	return false;
 }
