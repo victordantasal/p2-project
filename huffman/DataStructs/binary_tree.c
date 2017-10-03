@@ -76,6 +76,13 @@ bool BinaryTree_destruct(Binary_Tree *bt)
 	return false;
 }
 
+bool is_Leaf(Binary_Tree *bt)
+{
+	if(isNull(bt->left) && isNull(bt->right))
+		return true;
+	return false;
+}
+
 
 
 
