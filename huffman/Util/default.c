@@ -1,5 +1,7 @@
 #include "default.h"
 
+typedef unsigned char Byte;
+
 bool isNull(void *ptr)
 {
 	return ptr == NULL;
