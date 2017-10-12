@@ -2,7 +2,29 @@
 
 int* get_frequency(FILE *file_reader)
 {
-	//TODO method get frequency ALTERADO
+	int i, *frequency = (int*) malloc(sizeof(int)*BSIZE);
+	Byte aux;
+
+	if(!isNull(file_reader))
+	{
+		//ZERANDO ARRAY para iniciar contagem
+		for(i = 0; i < BSIZE; i++)
+			frequency[i] = 0;
+
+		//resetando o ponteiro de leitura para o inicio do arquivo.
+		rewind(file_reader);
+
+		//iniciando contagem das frequencias no arquivo
+		//até que se leia EOF
+		do{
+			aux = fgetc(file_reader);
+
+			if(feof(file_reader))
+				break;
+
+			frequency[aux]++;
+		}while(1);
+	}
 }
 
 Binary_Tree* get_huffmanTree(int *frequency)
