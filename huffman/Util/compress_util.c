@@ -2,7 +2,7 @@
 
 int* get_frequency(FILE *file_reader)
 {
-	//TODO method get frequency
+	//TODO method get frequency ALTERADO
 }
 
 Binary_Tree* get_huffmanTree(int *frequency)
