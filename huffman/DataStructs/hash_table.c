@@ -120,9 +120,9 @@ bool HashTable_destruct(Hash_Table *ht)
 	free(ht);
 	return true;
 }
-bool HashTable_add(Hash_Table *ht, void *value, int hash)
+bool HashTable_add(Hash_Table *ht, void *value, int pos)
 {
-	int h = value % hash;
+	int h = pos % BSIZE;
 	while(HashTable_getTable(ht,h) != NULL)
 	{
 		if(HashTable_getValue(ht,h) == value)
@@ -130,14 +130,14 @@ bool HashTable_add(Hash_Table *ht, void *value, int hash)
 			HashTable_setValue(ht,h,value);
 			break;
 		}
-		h = (h + 1) % hash;
+		h = (h + 1) % BSIZE;
 	}
 
 	if(HashTable_getTable(ht,h) == NULL)
 	{
 		Element *new_element = (Element*) malloc(sizeof(Element));
 		if(Element_setValue(new_element,value) && HashTable_setTable(ht,h,new_element))
-			HashTable_setFilled(ht,ht->filled++);
+			HashTable_getFilled(ht)++;
 			return true;
 	}
 
