@@ -5,7 +5,7 @@ typedef struct _element Element;
 
 struct _hash_table
 {
-	Element *table;
+	Element **table;
 	int maxsize;
 	int filled;
 };
@@ -123,20 +123,13 @@ bool HashTable_destruct(Hash_Table *ht)
 bool HashTable_add(Hash_Table *ht, void *value, int pos)
 {
 	int h = pos % BSIZE;
-	while(HashTable_getTable(ht,h) != NULL)
-	{
-		if(HashTable_getValue(ht,h) == value)
-		{
-			HashTable_setValue(ht,h,value);
-			break;
-		}
-		h = (h + 1) % BSIZE;
-	}
+	char aux[9];
+	strcpy(aux,value);
 
 	if(HashTable_getTable(ht,h) == NULL)
 	{
 		Element *new_element = (Element*) malloc(sizeof(Element));
-		if(Element_setValue(new_element,value) && HashTable_setTable(ht,h,new_element))
+		if(Element_setValue(new_element,aux) && HashTable_setTable(ht,h,new_element))
 			HashTable_getFilled(ht)++;
 			return true;
 	}
