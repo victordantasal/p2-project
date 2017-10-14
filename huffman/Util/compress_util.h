@@ -9,6 +9,7 @@
 
 int* get_frequency(FILE *file_reader);
 Binary_Tree* get_huffmanTree(int *frequency);
+void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code);//pecorre a árvore salvando os caminhos
 Hash_Table* get_dictionary(Binary_Tree *huffman_tree);
 bool writeheader_huffmanTree(FILE *file_writer, Binary_Tree *huffman_tree);
 bool writeheader_trash(FILE *file_writer, int trash);
