@@ -68,7 +68,7 @@ Binary_Tree* get_huffmanTree(int *frequency)
 
 void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
 {
-	char aux_left[9], aux_right[9];//s�o strings tempor�rias que ficar�o nos auxiliando a salvar os caminhos durante a recurs�o
+	char aux_left[8], aux_right[8];//s�o strings tempor�rias que ficar�o nos auxiliando a salvar os caminhos durante a recurs�o
 
 	if(isNull(huffman_tree->left) && isNull(huffman_tree->right))
 	{

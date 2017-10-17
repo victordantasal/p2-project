@@ -123,7 +123,7 @@ bool HashTable_destruct(Hash_Table *ht)
 bool HashTable_add(Hash_Table *ht, void *value, int pos)
 {
 	int h = pos % BSIZE;
-	char aux[9];
+	char aux[8];
 	strcpy(aux,value);
 
 	if(HashTable_getTable(ht,h) == NULL)
