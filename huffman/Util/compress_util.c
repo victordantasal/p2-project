@@ -5,17 +5,16 @@ int* get_frequency(FILE *file_reader)
 	int i, *frequency = (int*) malloc(sizeof(int)*BSIZE);
 	Byte aux;
 
+	//ZERANDO ARRAY para iniciar contagem
+	memset(frequency, 0, BSIZE);
+
 	if(!isNull(file_reader))
 	{
-		//ZERANDO ARRAY para iniciar contagem
-		for(i = 0; i < BSIZE; i++)
-			frequency[i] = 0;
-
 		//resetando o ponteiro de leitura para o inicio do arquivo.
 		rewind(file_reader);
 
 		//iniciando contagem das frequencias no arquivo
-		//at� que se leia EOF
+		//ate que se leia EOF
 		do{
 			aux = fgetc(file_reader);
 
@@ -24,7 +23,9 @@ int* get_frequency(FILE *file_reader)
 
 			frequency[aux]++;
 		}while(1);
-	}
+	}else
+		printf("ERROR INVALID FILE");
+	return frequency;
 }
 
 Binary_Tree* get_huffmanTree(int *frequency)
@@ -35,7 +36,7 @@ Binary_Tree* get_huffmanTree(int *frequency)
 	int i, sum;
 
 	// Se a frequencia existir entao cria-se uma arvore (com byte) e coloca ela numa fila de prioridade (na posicao 'i' do array)
-	for(i=0; i<BSIZE; i++)
+	for(i = 0; i < BSIZE; i++)
 	{
 		if(frequency[i] > 0)
 		{
@@ -62,8 +63,6 @@ Binary_Tree* get_huffmanTree(int *frequency)
 	}
 
 	return (Binary_Tree*)PriorityQueue_dequeue(pq);
-
-
 }
 
 void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
@@ -98,14 +97,74 @@ Hash_Table* get_dictionary(Binary_Tree *huffman_tree)
 	return ht;
 }
 
-bool writeheader_huffmanTree(FILE *file_writer, Binary_Tree *huffman_tree)
+char* getTree_preOrder(Binary_Tree *bt)
 {
-	//TODO method write header HuffmanTree
+	char *str = (char*) malloc(sizeof(char));
+
+	if(isNull(bt))
+	{
+		str[0] = '\0';
+	}else{
+		char value[2];
+		value[0] = *((Byte*) BinaryTree_getValue(bt) );
+		value[1] = '\0';
+
+		strcpy(str, value);
+
+		strcat(str, getTree_preOrder(BinaryTree_getLeft(bt)));
+		strcat(str, getTree_preOrder(BinaryTree_getRight(bt)));
+	}
+	return str;
 }
 
-bool writeheader_trash(FILE *file_writer, int trash)
+bool writeheader_huffmanTree(FILE *file_writer, Binary_Tree *huffman_tree)
 {
-	//TODO method write header trash
+	if(!isNull(file_writer))
+	{
+		Byte first, second;
+		char *preOrder_tree = getTree_preOrder(huffman_tree);
+		int tree_size = strlen(preOrder_tree);
+
+		first  =  31 & (tree_size>>8);
+		second = 255 &  tree_size;
+
+		rewind(file_writer);
+
+		fputc(first, file_writer);
+		fputc(second, file_writer);
+		fputs(preOrder_tree, file_writer);
+		return true;
+	}
+
+	printf("ERROR INVALID FILE");
+	return false;
+}
+
+bool writeheader_trash(FILE *file_writer, FILE *file_reader, int trash)
+{
+	if(!isNull(file_writer))
+	{
+		Byte byte;
+
+		if(!isNull(file_reader))
+		{
+			rewind(file_reader);
+			byte = fgetc(file_reader);
+		}else{
+			printf("ERROR INVALID FILE");
+			return false;
+		}
+
+		byte = byte | (224 & trash);
+
+		rewind(file_writer);
+
+		fputc(byte, file_writer);
+		return true;
+	}
+
+	printf("ERROR INVALID FILE");
+	return false;
 }
 
 bool writeData_compressed(FILE *original, FILE *compressed, int *trash) //muda o valor de trash
