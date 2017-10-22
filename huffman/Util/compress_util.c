@@ -2,7 +2,7 @@
 
 int* get_frequency(FILE *file_reader)
 {
-	int i, *frequency = (int*) malloc(sizeof(int)*BSIZE);
+	int *frequency = (int*) malloc(sizeof(int)*BSIZE);
 	Byte aux;
 
 	//ZERANDO ARRAY para iniciar contagem
@@ -69,9 +69,9 @@ void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
 {
 	char aux_left[8], aux_right[8];//s�o strings tempor�rias que ficar�o nos auxiliando a salvar os caminhos durante a recurs�o
 
-	if(isNull(huffman_tree->left) && isNull(huffman_tree->right))
+	if(is_Leaf(huffman_tree))
 	{
-		HashTable_add(ht,new_code,huffman_tree->value);
+		HashTable_add(ht, new_code, (int) BinaryTree_getValue(huffman_tree));
 		return;
 	}
 	else
@@ -79,10 +79,10 @@ void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
 		strcpy(aux_left,new_code);
 		strcpy(aux_right,new_code);
 
-		if(!isNull(huffman_tree->left))
-			go_through_tree(huffman_tree->left,ht,strcat(aux_left,"0"));
-		if(!isNull(huffman_tree->right))
-			go_through_tree(huffman_tree->right,ht,strcat(aux_right,"1"));
+		if(!isNull(BinaryTree_getLeft(huffman_tree)))
+			go_through_tree(BinaryTree_getLeft(huffman_tree), ht, strcat(aux_left,"0"));
+		if(!isNull(BinaryTree_getRight(huffman_tree)))
+			go_through_tree(BinaryTree_getRight(huffman_tree), ht, strcat(aux_right,"1"));
 	}
 }
 
@@ -170,4 +170,5 @@ bool writeheader_trash(FILE *file_writer, FILE *file_reader, int trash)
 bool writeData_compressed(FILE *original, FILE *compressed, int *trash) //muda o valor de trash
 {
 	//TODO method write data, changes trash's value too
+	return true;
 }

@@ -123,15 +123,15 @@ bool HashTable_destruct(Hash_Table *ht)
 bool HashTable_add(Hash_Table *ht, void *value, int pos)
 {
 	int h = pos % BSIZE;
-	char aux[8];
-	strcpy(aux,value);
 
 	if(HashTable_getTable(ht,h) == NULL)
 	{
 		Element *new_element = (Element*) malloc(sizeof(Element));
-		if(Element_setValue(new_element,aux) && HashTable_setTable(ht,h,new_element))
-			HashTable_getFilled(ht)++;
+		if(Element_setValue(new_element, value) && HashTable_setTable(ht,h,new_element))
+		{
+			HashTable_setFilled( ht, HashTable_getFilled(ht) + 1);
 			return true;
+		}
 	}
 
 	return false;
