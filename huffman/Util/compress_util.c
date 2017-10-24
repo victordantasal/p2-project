@@ -67,7 +67,7 @@ Binary_Tree* get_huffmanTree(int *frequency)
 
 void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
 {
-	char aux_left[8], aux_right[8];//s�o strings tempor�rias que ficar�o nos auxiliando a salvar os caminhos durante a recurs�o
+	char aux_left[8], aux_right[8];//sao strings temporarias que ficarao nos auxiliando a salvar os caminhos durante a recursao
 
 	if(is_Leaf(huffman_tree))
 	{
@@ -89,7 +89,7 @@ void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
 Hash_Table* get_dictionary(Binary_Tree *huffman_tree)
 {
 	Hash_Table *ht = HashTable_create(BSIZE);
-	char new_code[8];//essa string serve para salvar o novo c�digo de cada caractere
+	char new_code[8];//essa string serve para salvar o novo codigo de cada caractere
 	strcpy(new_code,"");//deixando a string vazia
 
 	go_through_tree(huffman_tree,ht,new_code);
