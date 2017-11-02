@@ -76,13 +76,31 @@ bool BinaryTree_destruct(Binary_Tree *bt)
 	return false;
 }
 
-bool is_Leaf(Binary_Tree *bt)
+bool BinaryTree_isLeaf(Binary_Tree *bt)
 {
-	if(isNull(bt->left) && isNull(bt->right))
-		return true;
+	if(!isNull(bt))
+		if(isNull(BinaryTree_getLeft(bt)) && isNull(BinaryTree_getRight(bt)))
+			return true;
 	return false;
 }
 
+void BinaryTree_printPreOrder(Binary_Tree *bt, void(*print)(void *value))
+{
+	if(!isNull(bt))
+	{
+		print(BinaryTree_getValue(bt));
+
+		BinaryTree_printPreOrder(
+				BinaryTree_getLeft(bt),
+				print
+				);
+
+		BinaryTree_printPreOrder(
+						BinaryTree_getRight(bt),
+						print
+						);
+	}
+}
 
 
 

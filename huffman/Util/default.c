@@ -11,7 +11,7 @@ FILE* FileReader_new(char *path)
 	if(!isNull(file))
 		return file;
 
-	DEBUG printf("CANNOT OPEN THIS FILE.\n Path: %s",path);
+	DEBUG printf("CANNOT OPEN THIS FILE. PATH: \"%s\"\n",path);
 	return NULL;
 }
 
@@ -21,6 +21,6 @@ FILE* FileWriter_new(char *path)
 	if(!isNull(file))
 		return file;
 
-	DEBUG printf("CANNOT OPEN THIS FILE.\n Path: %s",path);
+	DEBUG printf("CANNOT OPEN THIS FILE. PATH: \"%s\"\n",path);
 	return NULL;
 }

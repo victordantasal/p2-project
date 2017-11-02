@@ -6,7 +6,7 @@ int* get_frequency(FILE *file_reader)
 	Byte aux;
 
 	//ZERANDO ARRAY para iniciar contagem
-	memset(frequency, 0, BSIZE);
+	memset(frequency, 0, sizeof(int)*BSIZE );
 
 	if(!isNull(file_reader))
 	{
@@ -26,6 +26,17 @@ int* get_frequency(FILE *file_reader)
 	}else
 		printf("ERROR INVALID FILE");
 	return frequency;
+}
+
+void printQueue(Priority_Queue *pq)
+{
+	Node *aux = PriorityQueue_getHead(pq);
+	while(!isNull(aux))
+	{
+		printf("\tP:%d V:%c,", Node_getPriority(aux), *((Byte*)BinaryTree_getValue(Node_getValue(aux))));
+		aux = Node_getNext(aux);
+	}
+	printf("  END\n\n");
 }
 
 Binary_Tree* get_huffmanTree(int *frequency)
@@ -50,11 +61,12 @@ Binary_Tree* get_huffmanTree(int *frequency)
 	Binary_Tree *bt_aux_right, *bt_aux_left;
 	while(PriorityQueue_getSize(pq) > 1)
 	{
+		printQueue(pq);
 		sum = 0;
 		sum += Node_getPriority(PriorityQueue_getHead(pq));
-		bt_aux_right = (Binary_Tree*)PriorityQueue_dequeue(pq);
-		sum += Node_getPriority(PriorityQueue_getHead(pq));
 		bt_aux_left = (Binary_Tree*)PriorityQueue_dequeue(pq);
+		sum += Node_getPriority(PriorityQueue_getHead(pq));
+		bt_aux_right = (Binary_Tree*)PriorityQueue_dequeue(pq);
 		value = (Byte*)malloc(sizeof(Byte));
 		*value = '*';
 		bt = BinaryTree_new(value, bt_aux_left, bt_aux_right);
@@ -69,7 +81,7 @@ void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
 {
 	char aux_left[8], aux_right[8];//sao strings temporarias que ficarao nos auxiliando a salvar os caminhos durante a recursao
 
-	if(is_Leaf(huffman_tree))
+	if(BinaryTree_isLeaf(huffman_tree))
 	{
 		HashTable_add(ht, new_code, (int) BinaryTree_getValue(huffman_tree));
 		return;
@@ -105,9 +117,18 @@ char* getTree_preOrder(Binary_Tree *bt)
 	{
 		str[0] = '\0';
 	}else{
-		char value[2];
-		value[0] = *((Byte*) BinaryTree_getValue(bt) );
-		value[1] = '\0';
+		char value[3];
+		Byte current_value = *((Byte*) BinaryTree_getValue(bt));
+
+		if(BinaryTree_isLeaf(bt) && (current_value == '\\' || current_value == '*'))
+		{
+			value[0] = '\\';
+			value[1] = current_value;
+			value[2] = '\0';
+		}else{
+			value[0] = current_value;
+			value[1] = '\0';
+		}
 
 		strcpy(str, value);
 

@@ -18,7 +18,7 @@ bool BinaryTree_setRight(Binary_Tree *bt, Binary_Tree *new_right);
 Binary_Tree* BinaryTree_create();
 Binary_Tree* BinaryTree_new(void *value, Binary_Tree *left, Binary_Tree *right);
 bool BinaryTree_destruct(Binary_Tree *bt);
-bool is_Leaf(Binary_Tree *bt);
-
+bool BinaryTree_isLeaf(Binary_Tree *bt);
+void BinaryTree_printPreOrder(Binary_Tree *bt, void(*print)(void *value));
 
 #endif /* DATASTRUCTS_BINARY_TREE_H_ */

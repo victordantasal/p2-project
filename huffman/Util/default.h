@@ -14,7 +14,7 @@ FILE* FileReader_new(char *path);
 FILE* FileWriter_new(char *path);
 
 #define ERROR -404
-#define DEBUG if(1)
+#define DEBUG if(1) //  1 para mostrar saída DEBUG, 0 para não mostrar.
 #define BSIZE 256
 
 

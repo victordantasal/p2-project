@@ -67,8 +67,8 @@ void PriorityQueue_enqueue(Priority_Queue *pq, void *value, int priority)
 		while(!isNull(Node_getNext(aux)) && Node_getPriority(Node_getNext(aux)) < priority)
 			aux = Node_getNext(aux);
 
-		Node_setNext(aux, new_node);
 		Node_setNext(new_node, Node_getNext(aux));
+		Node_setNext(aux, new_node);
 	}
 
 
