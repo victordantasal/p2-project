@@ -176,7 +176,7 @@ bool writeheader_trash(FILE *file_writer, FILE *file_reader, int trash)
 			return false;
 		}
 
-		byte = byte | (224 & trash);
+		byte = byte | (224 & trash<<5);
 
 		rewind(file_writer);
 
