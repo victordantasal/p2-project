@@ -33,7 +33,7 @@ bool huffman_compress(char *file_path)
 	Hash_Table *dictionary = get_dictionary(huffman_tree);
 
 	if( writeheader_huffmanTree(compressed_fileWriter, huffman_tree) )
-	if( writeData_compressed(original_fileReader, compressed_fileWriter, &trash_size) )
+	if( writeData_compressed(original_fileReader, compressed_fileWriter, dictionary, &trash_size) )
 	  if( writeheader_trash(compressed_fileWriter, compressed_fileReader, trash_size) )
 		response = true;
 

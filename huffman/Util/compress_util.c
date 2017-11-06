@@ -188,8 +188,12 @@ bool writeheader_trash(FILE *file_writer, FILE *file_reader, int trash)
 	return false;
 }
 
-bool writeData_compressed(FILE *original, FILE *compressed, int *trash) //muda o valor de trash
+bool writeData_compressed(FILE *original, FILE *compressed, Hash_Table *dictionary, int *trash) //muda o valor de trash
 {
 	//TODO method write data, changes trash's value too
+	if(!isNull(original))
+	{
+
+	}
 	return true;
 }
