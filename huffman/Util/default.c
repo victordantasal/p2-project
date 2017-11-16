@@ -24,3 +24,8 @@ FILE* FileWriter_new(char *path)
 	DEBUG printf("CANNOT OPEN THIS FILE. PATH: \"%s\"\n",path);
 	return NULL;
 }
+
+bool isBit_i_set(Byte c, int i)
+{
+	return (c & (1 << i));
+}

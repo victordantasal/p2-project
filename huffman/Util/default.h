@@ -12,6 +12,7 @@ typedef unsigned char Byte;
 bool isNull(void *ptr);
 FILE* FileReader_new(char *path);
 FILE* FileWriter_new(char *path);
+bool isBit_i_set(Byte c, int i);
 
 #define ERROR -404
 #define DEBUG if(1) //  1 para mostrar saída DEBUG, 0 para não mostrar.
