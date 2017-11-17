@@ -16,7 +16,7 @@ bool isBit_i_set(Byte c, int i);
 Byte bit_set(Byte c, int i);
 
 #define ERROR -404
-#define DEBUG if(1) //  1 para mostrar saída DEBUG, 0 para não mostrar.
+#define DEBUG if(0) //  1 para mostrar saída DEBUG, 0 para não mostrar.
 #define BSIZE 256
 
 

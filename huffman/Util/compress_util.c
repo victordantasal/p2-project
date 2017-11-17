@@ -179,6 +179,7 @@ bool writeheader_trash(FILE *file_reader, FILE *file_writer, int trash)
 		byte |= (224 & trash << 5);
 
 		rewind(file_writer);
+		fseek(file_writer, 0, SEEK_SET);
 		fputc(byte, file_writer);
 		DEBUG printf("WriteTrash END\n");
 		return true;

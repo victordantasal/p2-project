@@ -30,15 +30,13 @@ bool huffman_compress(char *file_path)
 
 	long int *frequency = get_frequency(original_fileReader);
 	Binary_Tree *huffman_tree = get_huffmanTree(frequency, &tree_size);
-	BinaryTree_printPreOrder(huffman_tree, print);
-	printf("\n");
 	Hash_Table *dictionary = get_dictionary(huffman_tree);
 
 	if( writeheader_huffmanTree(compressed_fileWriter, huffman_tree, tree_size) )
 	if( writeData_compressed(original_fileReader, compressed_fileWriter, dictionary, &trash_size) )
 	{
 		fclose(compressed_fileWriter);
-		compressed_fileWriter = fopen(compressed_file_path, "ab");
+		compressed_fileWriter = fopen(compressed_file_path, "rb+");
 		if( writeheader_trash(compressed_fileReader, compressed_fileWriter, trash_size) )
 			response = true;
 	}
