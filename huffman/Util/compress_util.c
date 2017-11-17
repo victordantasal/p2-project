@@ -1,8 +1,8 @@
 #include "compress_util.h"
 
-int* get_frequency(FILE *file_reader)
+long int* get_frequency(FILE *file_reader)
 {
-	int *frequency = (int*) malloc(sizeof(int)*BSIZE);
+	long int *frequency = (long int*) malloc(sizeof(long int)*BSIZE);
 	Byte aux;
 
 	//ZERANDO ARRAY para iniciar contagem
@@ -39,12 +39,13 @@ void printQueue(Priority_Queue *pq)
 	printf("  END\n\n");
 }
 
-Binary_Tree* get_huffmanTree(int *frequency)
+Binary_Tree* get_huffmanTree(long int *frequency, int *tree_size)
 {
 	Binary_Tree *bt;
 	Priority_Queue *pq = PriorityQueue_create();
 	Byte *value;
-	int i, sum;
+	int i;
+	long int sum;
 
 	// Se a frequencia existir entao cria-se uma arvore (com byte) e coloca ela numa fila de prioridade (na posicao 'i' do array)
 	for(i = 0; i < BSIZE; i++)
@@ -53,6 +54,9 @@ Binary_Tree* get_huffmanTree(int *frequency)
 		{
 			value = (Byte*)malloc(sizeof(Byte));
 			*value = i;
+			if(i == 42 || i == 92)
+				*tree_size += 1;
+			*tree_size += 1;
 			bt = BinaryTree_new(value, NULL, NULL);
 			PriorityQueue_enqueue(pq, bt, frequency[i]);
 		}
@@ -61,99 +65,102 @@ Binary_Tree* get_huffmanTree(int *frequency)
 	Binary_Tree *bt_aux_right, *bt_aux_left;
 	while(PriorityQueue_getSize(pq) > 1)
 	{
-		printQueue(pq);
 		sum = 0;
 		sum += Node_getPriority(PriorityQueue_getHead(pq));
 		bt_aux_left = (Binary_Tree*)PriorityQueue_dequeue(pq);
 		sum += Node_getPriority(PriorityQueue_getHead(pq));
 		bt_aux_right = (Binary_Tree*)PriorityQueue_dequeue(pq);
 		value = (Byte*)malloc(sizeof(Byte));
-		*value = '*';
+		*value = 42;
+		*tree_size += 1;
 		bt = BinaryTree_new(value, bt_aux_left, bt_aux_right);
 
 		PriorityQueue_enqueue(pq, bt, sum);
 	}
-
+	DEBUG printf("GET DICTIONARY END\n");
 	return (Binary_Tree*)PriorityQueue_dequeue(pq);
 }
 
 void go_through_tree(Binary_Tree *huffman_tree,Hash_Table *ht,char *new_code)
 {
-	char aux_left[8], aux_right[8];//sao strings temporarias que ficarao nos auxiliando a salvar os caminhos durante a recursao
+	char *left, *right;
+	left = (char*) malloc(sizeof(char)*10);
+	right = (char*) malloc(sizeof(char)*10);
 
 	if(BinaryTree_isLeaf(huffman_tree))
 	{
-		HashTable_add(ht, new_code, (int) BinaryTree_getValue(huffman_tree));
+		HashTable_add(ht, new_code, (int) *((Byte*) BinaryTree_getValue(huffman_tree)));
 		return;
 	}
 	else
 	{
-		strcpy(aux_left,new_code);
-		strcpy(aux_right,new_code);
+		strcpy(left,new_code);
+		strcpy(right,new_code);
 
 		if(!isNull(BinaryTree_getLeft(huffman_tree)))
-			go_through_tree(BinaryTree_getLeft(huffman_tree), ht, strcat(aux_left,"0"));
+			go_through_tree(BinaryTree_getLeft(huffman_tree), ht, strcat(left,"0"));
 		if(!isNull(BinaryTree_getRight(huffman_tree)))
-			go_through_tree(BinaryTree_getRight(huffman_tree), ht, strcat(aux_right,"1"));
+			go_through_tree(BinaryTree_getRight(huffman_tree), ht, strcat(right,"1"));
 	}
 }
 
 Hash_Table* get_dictionary(Binary_Tree *huffman_tree)
 {
+	DEBUG printf("GET DICTIONARY BEGIN\n");
 	Hash_Table *ht = HashTable_create(BSIZE);
 	char new_code[8];//essa string serve para salvar o novo codigo de cada caractere
 	strcpy(new_code,"");//deixando a string vazia
 
 	go_through_tree(huffman_tree,ht,new_code);
-
+	DEBUG printf("GET DICTIONARY END\n");
 	return ht;
 }
 
-char* getTree_preOrder(Binary_Tree *bt)
+void getTree_preOrder(Binary_Tree *bt, char *str, int *index)
 {
-	char *str = (char*) malloc(sizeof(char));
-
-	if(isNull(bt))
+	Byte *value;
+	if(!isNull(bt))
 	{
-		str[0] = '\0';
-	}else{
-		char value[3];
-		Byte current_value = *((Byte*) BinaryTree_getValue(bt));
-
-		if(BinaryTree_isLeaf(bt) && (current_value == '\\' || current_value == '*'))
+		value = (Byte*) BinaryTree_getValue(bt);
+		if(BinaryTree_isLeaf(bt) && (*value == 92 || *value == 42))
 		{
-			value[0] = '\\';
-			value[1] = current_value;
-			value[2] = '\0';
-		}else{
-			value[0] = current_value;
-			value[1] = '\0';
+			str[*index] = 92;
+			*index += 1;
 		}
-
-		strcpy(str, value);
-
-		strcat(str, getTree_preOrder(BinaryTree_getLeft(bt)));
-		strcat(str, getTree_preOrder(BinaryTree_getRight(bt)));
+		str[*index] = (Byte) *value;
+		*index += 1;
+		if(!BinaryTree_isLeaf(bt))
+		{
+			getTree_preOrder(BinaryTree_getLeft(bt), str, index);
+			getTree_preOrder(BinaryTree_getRight(bt), str, index);
+		}
+	}else{
+		printf("\nnull\n");
 	}
-	return str;
 }
 
-bool writeheader_huffmanTree(FILE *file_writer, Binary_Tree *huffman_tree)
+bool writeheader_huffmanTree(FILE *file_writer, Binary_Tree *huffman_tree, int tree_size)
 {
+	DEBUG printf("WriteHeader BEGIN\n");
 	if(!isNull(file_writer))
 	{
-		Byte first, second;
-		char *preOrder_tree = getTree_preOrder(huffman_tree);
-		int tree_size = strlen(preOrder_tree);
-
+		rewind(file_writer);
+		Byte first = 0, second = 0;
+		char *preOrder_tree = (char*) malloc(sizeof(char)*tree_size);
+		memset(preOrder_tree, 0, sizeof(char)*tree_size);
+		int index = 0;
+		getTree_preOrder(huffman_tree, preOrder_tree, &index);
 		first  =  31 & (tree_size>>8);
 		second = 255 &  tree_size;
 
-		rewind(file_writer);
-
 		fputc(first, file_writer);
 		fputc(second, file_writer);
-		fputs(preOrder_tree, file_writer);
+		int i;
+		for (i = 0; i < tree_size; i++)
+		{
+			fputc((Byte) preOrder_tree[i], file_writer);
+		}
+		free(preOrder_tree);
 		return true;
 	}
 
@@ -161,26 +168,19 @@ bool writeheader_huffmanTree(FILE *file_writer, Binary_Tree *huffman_tree)
 	return false;
 }
 
-bool writeheader_trash(FILE *file_writer, FILE *file_reader, int trash)
+bool writeheader_trash(FILE *file_reader, FILE *file_writer, int trash)
 {
-	if(!isNull(file_writer))
+	DEBUG printf("\n\nWriteTrash BEGIN\n");
+	if(!isNull(file_reader) && !isNull(file_writer))
 	{
 		Byte byte;
-
-		if(!isNull(file_reader))
-		{
-			rewind(file_reader);
-			byte = fgetc(file_reader);
-		}else{
-			printf("ERROR INVALID FILE");
-			return false;
-		}
-
-		byte = byte | (224 & trash<<5);
+		rewind(file_reader);
+		byte = fgetc(file_reader);
+		byte |= (224 & trash << 5);
 
 		rewind(file_writer);
-
 		fputc(byte, file_writer);
+		DEBUG printf("WriteTrash END\n");
 		return true;
 	}
 
@@ -190,10 +190,50 @@ bool writeheader_trash(FILE *file_writer, FILE *file_reader, int trash)
 
 bool writeData_compressed(FILE *original, FILE *compressed, Hash_Table *dictionary, int *trash) //muda o valor de trash
 {
+	DEBUG printf("\n\nWriteDATA BEGIN\n");
 	//TODO method write data, changes trash's value too
-	if(!isNull(original))
-	{
+	Byte byte, byte_compressed;
+	bool last;
+	char *code;
+	int current_bit, end_bit;
 
+	if(!isNull(original) && !isNull(compressed))
+	{
+		rewind(original);
+		code = (char*)malloc(sizeof(char)*2);
+		code[0] = '\0';
+		last = false;
+
+		while(!last)
+		{
+			byte_compressed = 0;
+			current_bit = 7;
+			end_bit = 0;
+			while( current_bit >= end_bit)
+			{
+				if(code[0] == '\0')
+				{
+					byte = fgetc(original);
+
+					if(feof(original))
+					{
+						last = true;
+						break;
+					}
+
+					code = (char*) HashTable_getValue(dictionary, byte);
+				}
+
+				if(code[0] == '1')
+					byte_compressed = bit_set(byte_compressed, current_bit);
+
+				code++;
+				current_bit--;
+			}
+			fputc(byte_compressed, compressed);
+		}
+		*trash = current_bit + 1;
 	}
+	DEBUG printf("WriteDATA END\n");
 	return true;
 }

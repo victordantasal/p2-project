@@ -9,12 +9,12 @@ typedef struct _node_priority_queue Node;
 struct _priority_queue;
 struct _node_priority_queue;
 
-void PriorityQueue_enqueue(Priority_Queue *pq, void *value, int priority);
+void PriorityQueue_enqueue(Priority_Queue *pq, void *value, long int priority);
 void* PriorityQueue_dequeue(Priority_Queue *pq);
 bool PriorityQueue_isEmpty(Priority_Queue *pq);
 void PriorityQueue_destruct(Priority_Queue *pq);
 Priority_Queue* PriorityQueue_create();
-Node* Node_new(void *value, int priority);
+Node* Node_new(void *value, long int priority);
 
 
 Node* PriorityQueue_getHead(Priority_Queue *pq);

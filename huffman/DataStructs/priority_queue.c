@@ -9,13 +9,13 @@ struct _priority_queue
 struct _node_priority_queue
 {
 	void *value;
-	int priority;
+	long int priority;
 	Node *next;
 
 };
 
 
-Node* Node_new(void *value, int priority)
+Node* Node_new(void *value, long int priority)
 {
 	Node *new_node = (Node*) malloc(sizeof(Node));
 	if (Node_setValue(new_node, value) &&
@@ -53,7 +53,7 @@ bool PriorityQueue_isEmpty(Priority_Queue *pq)
 	return true;
 }
 
-void PriorityQueue_enqueue(Priority_Queue *pq, void *value, int priority)
+void PriorityQueue_enqueue(Priority_Queue *pq, void *value, long int priority)
 {
 	Node *new_node = Node_new(value, priority);
 	Node *aux;

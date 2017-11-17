@@ -29,3 +29,9 @@ bool isBit_i_set(Byte c, int i)
 {
 	return (c & (1 << i));
 }
+
+Byte bit_set(Byte c, int i)
+{
+	return (c | (1 << i));
+}
+
